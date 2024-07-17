@@ -23,8 +23,8 @@ class Orbit:
 
 def generate_orbits(args):
     constellation_type = ConstellationType[args.constellation_type]
-    num_planes = int(args.num_sats)
-    num_sats_per_plane = int(args.num_planes)
+    num_planes = int(args.num_planes)
+    num_sats_per_plane = int(args.num_sats_per_plane)
 
     if constellation_type == ConstellationType.FILL and num_planes != 1:
         raise Exception("Fill type must have a single plane")
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-type', '--constellation_type', help='WALKER_DELTA, WALKER_STAR, FILL')
-    parser.add_argument('-sats', '--num_sats', help='The number of satellites per orbital plane')
+    parser.add_argument('-sats', '--num_sats_per_plane', help='The number of satellites per orbital plane')
     parser.add_argument('-planes', '--num_planes', help='The number of orbital plans to generate')
 
     parser.add_argument('-a', '--semi_major_axis', help='a, km')
