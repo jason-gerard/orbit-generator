@@ -1,6 +1,6 @@
-import sys
 import copy
 import pprint
+import argparse
 from enum import Enum
 from dataclasses import dataclass
 
@@ -16,27 +16,26 @@ class Orbit:
     semi_major_axis: float  # a, km
     eccentricity: float  # e
     inclination: float  # i, degrees
-    right_ascension_of_the_ascending_node: float  # upper omega, degrees
-    argument_of_perigee: float  # lower omega, degrees
+    right_ascension_of_the_ascending_node: float  # omega, degrees
+    argument_of_perigee: float  # w, degrees
     mean_anomaly: float  # v, degrees
 
 
-def main():
-    # print(sys.argv)
-    constellation_type = ConstellationType.WALKER_DELTA
-    num_planes = 2
-    num_sats_per_plane = 2
+def generate_orbits(args):
+    constellation_type = ConstellationType[args.constellation_type]
+    num_planes = int(args.num_sats)
+    num_sats_per_plane = int(args.num_planes)
 
     if constellation_type == ConstellationType.FILL and num_planes != 1:
         raise Exception("Fill type must have a single plane")
 
     initial_orbit = Orbit(
-        semi_major_axis=500,
-        eccentricity=0,
-        inclination=45,
-        right_ascension_of_the_ascending_node=0,
-        argument_of_perigee=0,
-        mean_anomaly=0,
+        semi_major_axis=float(args.semi_major_axis),
+        eccentricity=float(args.eccentricity),
+        inclination=float(args.inclination),
+        right_ascension_of_the_ascending_node=float(args.right_ascension_of_the_ascending_node),
+        argument_of_perigee=float(args.argument_of_perigee),
+        mean_anomaly=float(args.mean_anomaly),
     )
 
     # Adjust the mean anomaly to evenly space satellites in the same plane
@@ -74,4 +73,19 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-type', '--constellation_type', help='WALKER_DELTA, WALKER_STAR, FILL')
+    parser.add_argument('-sats', '--num_sats', help='The number of satellites per orbital plane')
+    parser.add_argument('-planes', '--num_planes', help='The number of orbital plans to generate')
+
+    parser.add_argument('-a', '--semi_major_axis', help='a, km')
+    parser.add_argument('-e', '--eccentricity', help='e')
+    parser.add_argument('-i', '--inclination', help='i, degrees')
+    parser.add_argument('-raan', '--right_ascension_of_the_ascending_node', help='omega, degrees')
+    parser.add_argument('-w', '--argument_of_perigee', help='w, degrees')
+    parser.add_argument('-v', '--mean_anomaly', help='v, degrees')
+
+    args = parser.parse_args()
+
+    generate_orbits(args)
