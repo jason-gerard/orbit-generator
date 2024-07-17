@@ -1,2 +1,6 @@
 .idea
 venv
+inputs
+!inputs/cislunar_scenario.csv
+outputs
+!outputs/cislunar_scenario.csv
