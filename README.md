@@ -22,3 +22,6 @@ You can see what the different parameters mean with the help command
 ```
 python3 orbit_generator.py --help
 ```
+
+## References
+This is a good website to test out your seed orbit, [https://orbitalmechanics.info/](https://orbitalmechanics.info/). It lets you visualize what it will look like, around Earth at least.
