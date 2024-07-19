@@ -1,0 +1,18 @@
+#node_type,node_name,id,central_object,altitude,inclination,eccentricity,right_ascension_of_the_ascending_node,argument_of_perigee,mean_anomaly
+#Earth constellation
+Orbiter,c1o1,1001,Earth,500.0,45.0,0.0,0.0,0.0,0.0
+Orbiter,c1o2,1002,Earth,500.0,45.0,0.0,0.0,0.0,180.0
+Orbiter,c1o3,1003,Earth,500.0,45.0,0.0,45.0,0.0,0.0
+Orbiter,c1o4,1004,Earth,500.0,45.0,0.0,45.0,0.0,180.0
+Orbiter,c1o5,1005,Earth,500.0,45.0,0.0,90.0,0.0,0.0
+Orbiter,c1o6,1006,Earth,500.0,45.0,0.0,90.0,0.0,180.0
+Orbiter,c1o7,1007,Earth,500.0,45.0,0.0,135.0,0.0,0.0
+Orbiter,c1o8,1008,Earth,500.0,45.0,0.0,135.0,0.0,180.0
+Orbiter,c1o9,1009,Earth,500.0,45.0,0.0,180.0,0.0,0.0
+Orbiter,c1o10,1010,Earth,500.0,45.0,0.0,180.0,0.0,180.0
+Orbiter,c1o11,1011,Earth,500.0,45.0,0.0,225.0,0.0,0.0
+Orbiter,c1o12,1012,Earth,500.0,45.0,0.0,225.0,0.0,180.0
+Orbiter,c1o13,1013,Earth,500.0,45.0,0.0,270.0,0.0,0.0
+Orbiter,c1o14,1014,Earth,500.0,45.0,0.0,270.0,0.0,180.0
+Orbiter,c1o15,1015,Earth,500.0,45.0,0.0,315.0,0.0,0.0
+Orbiter,c1o16,1016,Earth,500.0,45.0,0.0,315.0,0.0,180.0

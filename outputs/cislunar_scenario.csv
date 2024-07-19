@@ -1,4 +1,4 @@
-#node_type,node_name,id,central_object,semi_major_axis,inclination,eccentricity,right_ascension_of_the_ascending_node,argument_of_perigee,mean_anomaly
+#node_type,node_name,id,central_object,altitude,inclination,eccentricity,right_ascension_of_the_ascending_node,argument_of_perigee,mean_anomaly
 #Earth constellation
 Orbiter,c1o1,101,Earth,500.0,45.0,0.0,0.0,0.0,0.0
 Orbiter,c1o2,102,Earth,500.0,45.0,0.0,0.0,0.0,90.0

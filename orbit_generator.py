@@ -14,7 +14,7 @@ class ConstellationType(Enum):
 
 @dataclass
 class Orbit:
-    semi_major_axis: float  # a, km
+    altitude: float  # a, km
     eccentricity: float  # e
     inclination: float  # i, degrees
     right_ascension_of_the_ascending_node: float  # omega, degrees
@@ -68,8 +68,6 @@ def generate_orbits(
                                                                * right_ascension_of_the_ascending_node_spacing
                                                                + right_ascension_of_the_ascending_node_offset)
             elif constellation_type == ConstellationType.WALKER_DELTA:
-                assert initial_orbit.inclination == 45
-
                 right_ascension_of_the_ascending_node_spacing = 360 / num_planes
                 orbit.right_ascension_of_the_ascending_node = (plane_idx
                                                                * right_ascension_of_the_ascending_node_spacing
@@ -95,7 +93,7 @@ def seed_orbit_csv_reader(file_name: str) -> list[SeedOrbit]:
                 num_sats_per_plane=int(row['num_sats_per_plane']),
                 num_planes=int(row['num_planes']),
                 orbit=Orbit(
-                    semi_major_axis=float(row['semi_major_axis']),
+                    altitude=float(row['altitude']),
                     eccentricity=float(row['eccentricity']),
                     inclination=float(row['inclination']),
                     right_ascension_of_the_ascending_node=float(row['right_ascension_of_the_ascending_node']),
@@ -117,7 +115,7 @@ def constellation_csv_writer(file_name: str, constellations: list[Constellation]
         "node_name",
         "id",
         "central_object",
-        "semi_major_axis",
+        "altitude",
         "inclination",
         "eccentricity",
         "right_ascension_of_the_ascending_node",
@@ -132,13 +130,13 @@ def constellation_csv_writer(file_name: str, constellations: list[Constellation]
             f.write(f"#{constellation.name}\n")
             for orbit_idx, orbit in enumerate(constellation.orbits):
                 node_name = f"c{constellation_idx+1}o{orbit_idx+1}"
-                node_id = str(100 * (constellation_idx + 1) + orbit_idx + 1)
+                node_id = str(1000 * (constellation_idx + 1) + orbit_idx + 1)
                 line = ",".join([
                     NODE_TYPE,
                     node_name,
                     node_id,
                     constellation.central_object,
-                    str(orbit.semi_major_axis),
+                    str(orbit.altitude),
                     str(orbit.inclination),
                     str(orbit.eccentricity),
                     str(orbit.right_ascension_of_the_ascending_node),
@@ -174,7 +172,7 @@ def main(args):
         num_sats_per_plane = int(args.num_sats_per_plane)
 
         initial_orbit = Orbit(
-            semi_major_axis=float(args.semi_major_axis),
+            altitude=float(args.altitude),
             eccentricity=float(args.eccentricity),
             inclination=float(args.inclination),
             right_ascension_of_the_ascending_node=float(args.right_ascension_of_the_ascending_node),
@@ -201,7 +199,7 @@ if __name__ == "__main__":
     parser.add_argument('-sats', '--num_sats_per_plane', help='The number of satellites per orbital plane')
     parser.add_argument('-planes', '--num_planes', help='The number of orbital plans to generate')
 
-    parser.add_argument('-a', '--semi_major_axis', help='a, km')
+    parser.add_argument('-a', '--altitude', help='a, km')
     parser.add_argument('-e', '--eccentricity', help='e')
     parser.add_argument('-i', '--inclination', help='i, degrees')
     parser.add_argument('-raan', '--right_ascension_of_the_ascending_node', help='omega, degrees')
