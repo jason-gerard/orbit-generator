@@ -191,6 +191,7 @@ def main(args):
         constellations = [Constellation(
             name="constellation",
             central_object="Earth",
+            rules=[],
             orbits=orbits,
         )]
 
