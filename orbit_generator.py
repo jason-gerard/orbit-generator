@@ -2,6 +2,7 @@ import copy
 import time
 import argparse
 import csv
+import constants
 from enum import Enum
 from dataclasses import dataclass
 
@@ -26,6 +27,7 @@ class Orbit:
 class SeedOrbit:
     name: str
     central_object: str
+    rules: list[str]
     constellation_type: ConstellationType
     num_planes: int
     num_sats_per_plane: int
@@ -36,6 +38,7 @@ class SeedOrbit:
 class Constellation:
     name: str
     central_object: str
+    rules: list[str]
     orbits: list[Orbit]
 
 
@@ -89,6 +92,7 @@ def seed_orbit_csv_reader(file_name: str) -> list[SeedOrbit]:
             seed_orbit = SeedOrbit(
                 name=row['name'],
                 central_object=row['central_object'],
+                rules=row['rules'].split(constants.RULE_SEPARATOR),
                 constellation_type=ConstellationType[row['constellation_type']],
                 num_sats_per_plane=int(row['num_sats_per_plane']),
                 num_planes=int(row['num_planes']),
@@ -108,8 +112,6 @@ def seed_orbit_csv_reader(file_name: str) -> list[SeedOrbit]:
 
 
 def constellation_csv_writer(file_name: str, constellations: list[Constellation]):
-    NODE_TYPE = "Orbiter"
-
     header = ",".join([
         "node_type",
         "node_name",
@@ -120,7 +122,8 @@ def constellation_csv_writer(file_name: str, constellations: list[Constellation]
         "eccentricity",
         "right_ascension_of_the_ascending_node",
         "argument_of_perigee",
-        "mean_anomaly"
+        "mean_anomaly",
+        "rules",
     ])
 
     with open(f"./outputs/{file_name}", "w") as f:
@@ -132,7 +135,7 @@ def constellation_csv_writer(file_name: str, constellations: list[Constellation]
                 node_name = f"c{constellation_idx+1}o{orbit_idx+1}"
                 node_id = str(1000 * (constellation_idx + 1) + orbit_idx + 1)
                 line = ",".join([
-                    NODE_TYPE,
+                    constants.NODE_TYPE,
                     node_name,
                     node_id,
                     constellation.central_object,
@@ -142,6 +145,7 @@ def constellation_csv_writer(file_name: str, constellations: list[Constellation]
                     str(orbit.right_ascension_of_the_ascending_node),
                     str(orbit.argument_of_perigee),
                     str(orbit.mean_anomaly),
+                    constants.RULE_SEPARATOR.join(constellation.rules)
                 ])
 
                 f.write(line + "\n")
@@ -164,6 +168,7 @@ def main(args):
             constellations.append(Constellation(
                 name=seed_orbit.name,
                 central_object=seed_orbit.central_object,
+                rules=seed_orbit.rules,
                 orbits=orbits,
             ))
     else:

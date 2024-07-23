@@ -1,0 +1,3 @@
+NODE_TYPE = "Orbiter"
+
+RULE_SEPARATOR = "|"

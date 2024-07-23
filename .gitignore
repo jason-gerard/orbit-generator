@@ -6,3 +6,5 @@ inputs
 outputs
 !outputs/cislunar_scenario.csv
 !outputs/earth_scenario.csv
+
+**/__pycache__

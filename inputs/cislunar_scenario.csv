@@ -1,4 +1,4 @@
-name,central_object,constellation_type,num_sats_per_plane,num_planes,altitude,eccentricity,inclination,right_ascension_of_the_ascending_node,argument_of_perigee,mean_anomaly
-Earth constellation,Earth,WALKER_DELTA,4,2,500,0,45,0,0,0
-Moon low orbit constellation,Moon,WALKER_DELTA,16,8,500,0,45,0,0,0
-Moon high orbit relay constellation,Moon,WALKER_STAR,4,2,1500,0,90,0,0,0
+name,central_object,constellation_type,num_sats_per_plane,num_planes,altitude,eccentricity,inclination,right_ascension_of_the_ascending_node,argument_of_perigee,mean_anomaly,rules
+Earth constellation,Earth,WALKER_DELTA,4,2,500,0,45,0,0,0,
+Moon low orbit constellation,Moon,WALKER_DELTA,16,8,500,0,45,0,0,0,localPlanetOnly
+Moon high orbit relay constellation,Moon,WALKER_STAR,4,2,1500,0,90,0,0,0,
