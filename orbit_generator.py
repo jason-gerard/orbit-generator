@@ -133,6 +133,9 @@ def constellation_csv_writer(file_name: str, constellations: list[Constellation]
             f.write(f"#{constellation.name}\n")
             for orbit_idx, orbit in enumerate(constellation.orbits):
                 node_name = f"c{constellation_idx+1}o{orbit_idx+1}"
+                # TODO: This node_id generator only support constellations up to size 1,000 before spilling over into the next
+                # constellation, this should be changes such that we can encode the planet, constellation, and a unique
+                # node id into the value.
                 node_id = str(1000 * (constellation_idx + 1) + orbit_idx + 1)
                 line = ",".join([
                     constants.NODE_TYPE,
