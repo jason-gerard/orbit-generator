@@ -1,0 +1,10 @@
+#node_type,node_name,id,central_object,altitude,inclination,eccentricity,right_ascension_of_the_ascending_node,argument_of_perigee,mean_anomaly
+#constellation
+Orbiter,c1o1,101,Earth,500.0,45.0,0.0,0.0,0.0,0.0
+Orbiter,c1o2,102,Earth,500.0,45.0,0.0,0.0,0.0,90.0
+Orbiter,c1o3,103,Earth,500.0,45.0,0.0,0.0,0.0,180.0
+Orbiter,c1o4,104,Earth,500.0,45.0,0.0,0.0,0.0,270.0
+Orbiter,c1o5,105,Earth,500.0,45.0,0.0,180.0,0.0,0.0
+Orbiter,c1o6,106,Earth,500.0,45.0,0.0,180.0,0.0,90.0
+Orbiter,c1o7,107,Earth,500.0,45.0,0.0,180.0,0.0,180.0
+Orbiter,c1o8,108,Earth,500.0,45.0,0.0,180.0,0.0,270.0

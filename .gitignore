@@ -1,10 +1,4 @@
 .idea
 venv
-inputs
-!inputs/cislunar_scenario.csv
-!inputs/earth_scenario.csv
-outputs
-!outputs/cislunar_scenario.csv
-!outputs/earth_scenario.csv
 
 **/__pycache__
