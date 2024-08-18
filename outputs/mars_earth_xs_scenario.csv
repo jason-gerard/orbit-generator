@@ -8,4 +8,3 @@ Orbiter,c2o3,2003,Mars,500.0,45.0,0.0,180.0,0.0,0.0,localPlanetOnly
 Orbiter,c2o4,2004,Mars,500.0,45.0,0.0,180.0,0.0,180.0,localPlanetOnly
 #Mars high orbit relay constellation
 Orbiter,c3o1,3001,Mars,1500.0,90.0,0.0,0.0,0.0,0.0,
-Orbiter,c3o2,3002,Mars,1500.0,90.0,0.0,90.0,0.0,0.0,

@@ -1,4 +1,4 @@
 name,central_object,constellation_type,num_sats_per_plane,num_planes,altitude,eccentricity,inclination,right_ascension_of_the_ascending_node,argument_of_perigee,mean_anomaly,rules
 Earth constellation,Earth,WALKER_DELTA,1,1,500,0,45,0,0,0,
 Mars low orbit constellation,Mars,WALKER_DELTA,2,2,500,0,45,0,0,0,localPlanetOnly
-Mars high orbit relay constellation,Mars,WALKER_STAR,1,2,1500,0,90,0,0,0,
+Mars high orbit relay constellation,Mars,WALKER_STAR,1,1,1500,0,90,0,0,0,

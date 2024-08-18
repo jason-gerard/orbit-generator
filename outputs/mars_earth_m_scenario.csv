@@ -71,6 +71,8 @@ Orbiter,c2o63,2063,Mars,500.0,45.0,0.0,315.0,0.0,270.0,localPlanetOnly
 Orbiter,c2o64,2064,Mars,500.0,45.0,0.0,315.0,0.0,315.0,localPlanetOnly
 #Mars high orbit relay constellation
 Orbiter,c3o1,3001,Mars,1500.0,90.0,0.0,0.0,0.0,0.0,
-Orbiter,c3o2,3002,Mars,1500.0,90.0,0.0,0.0,0.0,180.0,
-Orbiter,c3o3,3003,Mars,1500.0,90.0,0.0,90.0,0.0,0.0,
-Orbiter,c3o4,3004,Mars,1500.0,90.0,0.0,90.0,0.0,180.0,
+Orbiter,c3o2,3002,Mars,1500.0,90.0,0.0,0.0,0.0,120.0,
+Orbiter,c3o3,3003,Mars,1500.0,90.0,0.0,0.0,0.0,240.0,
+Orbiter,c3o4,3004,Mars,1500.0,90.0,0.0,90.0,0.0,0.0,
+Orbiter,c3o5,3005,Mars,1500.0,90.0,0.0,90.0,0.0,120.0,
+Orbiter,c3o6,3006,Mars,1500.0,90.0,0.0,90.0,0.0,240.0,
