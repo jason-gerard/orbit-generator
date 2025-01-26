@@ -146,7 +146,7 @@ def seed_gs_position_reader(file_name: str) -> GSPositions | None:
             gs_altitude = row['altitude']
             num_gs = row['num_gs']
 
-            for _ in num_gs:
+            for _ in range(int(num_gs)):
                 gs_positions.append(GSPosition(
                     altitude=gs_altitude,
                     latitude=int(random.uniform(latitude_lower, latitude_upper)),
