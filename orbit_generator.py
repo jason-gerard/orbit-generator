@@ -3,6 +3,7 @@ import time
 import argparse
 import csv
 import constants
+import random
 from enum import Enum
 from dataclasses import dataclass
 
@@ -40,6 +41,19 @@ class Constellation:
     central_object: str
     rules: list[str]
     orbits: list[Orbit]
+
+
+@dataclass
+class GSPosition:
+    latitude: float
+    longitude: float
+    altitude: float
+
+@dataclass
+class GSPositions:
+    name: str
+    central_object: str
+    positions: list[GSPosition]
 
 
 def generate_orbits(
@@ -87,7 +101,10 @@ def seed_orbit_csv_reader(file_name: str) -> list[SeedOrbit]:
     seed_orbits = []
 
     with open(f"./inputs/{file_name}", "r") as f:
-        reader = csv.DictReader(f, delimiter=",")
+        sections = f.read().split("\n\n")
+
+        # Constellation section goes first
+        reader = csv.DictReader(sections[0].split("\n"), delimiter=",")
         for row in reader:
             seed_orbit = SeedOrbit(
                 name=row['name'],
@@ -109,6 +126,40 @@ def seed_orbit_csv_reader(file_name: str) -> list[SeedOrbit]:
             seed_orbits.append(seed_orbit)
 
     return seed_orbits
+
+
+def seed_gs_position_reader(file_name: str) -> GSPositions | None:
+    gs_positions = []
+
+    latitude_upper = 90.0
+    latitude_lower = -90.0
+    longitude_upper = 180.0
+    longitude_lower = -180.0
+
+    with open(f"./inputs/{file_name}", "r") as f:
+        sections = f.read().split("\n\n")
+        if len(sections) == 1:
+            return
+
+        reader = csv.DictReader(sections[1].split("\n"), delimiter=",")
+        for row in reader:
+            gs_altitude = row['altitude']
+            num_gs = row['num_gs']
+
+            for _ in num_gs:
+                gs_positions.append(GSPosition(
+                    altitude=gs_altitude,
+                    latitude=int(random.uniform(latitude_lower, latitude_upper)),
+                    longitude=int(random.uniform(longitude_lower, longitude_upper)),
+                ))
+
+            gs = GSPositions(
+                name=row['name'],
+                central_object=row['central_object'],
+                positions=gs_positions
+            )
+
+    return gs
 
 
 def constellation_csv_writer(file_name: str, constellations: list[Constellation]):
@@ -153,6 +204,38 @@ def constellation_csv_writer(file_name: str, constellations: list[Constellation]
 
                 f.write(line + "\n")
 
+def gs_csv_writer(file_name: str, gs_positions: GSPositions):
+    header = ",".join([
+        "node_type",
+        "node_name",
+        "id",
+        "central_object",
+        "latitude",
+        "longitude",
+        "altitude",
+        "rules",
+    ])
+
+    with open(f"./outputs/{file_name}", "a") as f:
+        f.write(f"#{header}\n")
+
+        f.write(f"#{gs_positions.name}\n")
+        for gs_idx, gs in enumerate(gs_positions.positions):
+            node_name = f"gs{gs_idx+1}"
+            node_id = str(9000 + gs_idx + 1)
+            line = ",".join([
+                constants.LANDER_TYPE,
+                node_name,
+                node_id,
+                gs_positions.central_object,
+                str(gs.latitude),
+                str(gs.longitude),
+                str(gs.altitude),
+                "",
+            ])
+
+            f.write(line + "\n")
+
 
 def main(args):
     if args.file:
@@ -174,6 +257,8 @@ def main(args):
                 rules=seed_orbit.rules,
                 orbits=orbits,
             ))
+
+        gs = seed_gs_position_reader(file_name)
     else:
         constellation_type = ConstellationType[args.constellation_type]
         num_planes = int(args.num_planes)
@@ -198,10 +283,17 @@ def main(args):
             orbits=orbits,
         )]
 
+        gs = None
+
     constellation_csv_writer(file_name, constellations)
+
+    if gs:
+        gs_csv_writer(file_name, gs)
 
 
 if __name__ == "__main__":
+    random.seed(42)
+
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-type', '--constellation_type', help='WALKER_DELTA, WALKER_STAR, FILL')

@@ -1,0 +1,11 @@
+#node_type,node_name,id,central_object,altitude,inclination,eccentricity,right_ascension_of_the_ascending_node,argument_of_perigee,mean_anomaly,rules
+#Earth constellation
+Orbiter,c1o1,1001,Earth,1500.0,25.0,0.0,0.0,0.0,0.0,
+#Mars constellation
+Orbiter,c2o1,2001,Mars,500.0,45.0,0.0,0.0,0.0,0.0,
+Orbiter,c2o2,2002,Mars,500.0,45.0,0.0,0.0,0.0,180.0,
+Orbiter,c2o3,2003,Mars,500.0,45.0,0.0,180.0,0.0,0.0,
+Orbiter,c2o4,2004,Mars,500.0,45.0,0.0,180.0,0.0,180.0,
+#node_type,node_name,id,central_object,latitude,longitude,altitude,rules
+#Earth ground stations
+Lander,gs1,9001,Earth,25,-170,100,
