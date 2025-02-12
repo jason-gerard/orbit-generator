@@ -11,7 +11,7 @@ from dataclasses import dataclass
 class ConstellationType(Enum):
     WALKER_STAR = 1
     WALKER_DELTA = 2
-    FILL = 3
+    EQUATORIAL = 3
 
 
 @dataclass
@@ -62,8 +62,8 @@ def generate_orbits(
         num_planes: int,
         num_sats_per_plane: int,
 ) -> list[Orbit]:
-    if constellation_type == ConstellationType.FILL and num_planes != 1:
-        raise Exception("Fill type must have a single plane")
+    if constellation_type == ConstellationType.EQUATORIAL and num_planes != 1:
+        raise Exception("EQUATORIAL type must have a single plane")
 
     # Adjust the mean anomaly to evenly space satellites in the same plane
     mean_anomaly_spacing = 360 / num_sats_per_plane
@@ -89,7 +89,7 @@ def generate_orbits(
                 orbit.right_ascension_of_the_ascending_node = (plane_idx
                                                                * right_ascension_of_the_ascending_node_spacing
                                                                + right_ascension_of_the_ascending_node_offset)
-            elif constellation_type == ConstellationType.FILL:
+            elif constellation_type == ConstellationType.EQUATORIAL:
                 pass
 
             orbits.append(orbit)
@@ -237,6 +237,104 @@ def gs_csv_writer(file_name: str, gs_positions: GSPositions):
             f.write(line + "\n")
 
 
+def incremental_scenarios(file_name):
+    # Static Earth assets
+    ground_stations = GSPositions(
+        name="Earth ground stations",
+        central_object="Earth",
+        positions=[
+            # Goldstone
+            GSPosition(
+                altitude=100,
+                latitude=35.426667,
+                longitude=-116.89,
+            ),
+            # Madrid
+            GSPosition(
+                altitude=100,
+                latitude=40.431389,
+                longitude=-4.248056,
+            ),
+            # Canberra
+            GSPosition(
+                altitude=100,
+                latitude=-35.401389,
+                longitude=148.981667,
+            ),
+        ]
+    )
+
+    # Dynamic deep-space assets
+    min_source_nodes = 4
+    max_source_nodes = 64
+    num_planes = 4
+
+    for num_source_nodes in range(min_source_nodes, max_source_nodes+1, 4):
+        mars_seed_orbit = SeedOrbit(
+            name="Mars constellation",
+            central_object="Mars",
+            rules=[],
+            constellation_type=ConstellationType.WALKER_STAR,
+            num_sats_per_plane=int(num_source_nodes/num_planes),
+            num_planes=num_planes,
+            orbit=Orbit(
+                altitude=500,
+                eccentricity=0,
+                inclination=90,
+                right_ascension_of_the_ascending_node=0,
+                argument_of_perigee=0,
+                mean_anomaly=0,
+            )
+        )
+
+        mars_constellation = Constellation(
+            name=mars_seed_orbit.name,
+            central_object=mars_seed_orbit.central_object,
+            rules=mars_seed_orbit.rules,
+            orbits=generate_orbits(
+                mars_seed_orbit.orbit,
+                mars_seed_orbit.constellation_type,
+                mars_seed_orbit.num_planes,
+                mars_seed_orbit.num_sats_per_plane,
+            ),
+        )
+
+        earth_relay_seed_orbit = SeedOrbit(
+            name="Earth constellation",
+            central_object="Earth",
+            rules=[],
+            constellation_type=ConstellationType.EQUATORIAL,
+            num_sats_per_plane=1+int((num_source_nodes-1)/16),
+            num_planes=1,
+            orbit=Orbit(
+                altitude=5000.0,
+                eccentricity=0,
+                inclination=0,
+                right_ascension_of_the_ascending_node=0,
+                argument_of_perigee=0,
+                mean_anomaly=0,
+            )
+        )
+
+        earth_relay_constellation = Constellation(
+            name=earth_relay_seed_orbit.name,
+            central_object=earth_relay_seed_orbit.central_object,
+            rules=earth_relay_seed_orbit.rules,
+            orbits=generate_orbits(
+                earth_relay_seed_orbit.orbit,
+                earth_relay_seed_orbit.constellation_type,
+                earth_relay_seed_orbit.num_planes,
+                earth_relay_seed_orbit.num_sats_per_plane,
+            ),
+        )
+
+        constellations = [earth_relay_constellation, mars_constellation]
+
+        output_filename = f"{file_name.split('.')[0]}_{num_source_nodes}.csv"
+        constellation_csv_writer(output_filename, constellations)
+        gs_csv_writer(output_filename, ground_stations)
+
+
 def main(args):
     if args.file:
         file_name = args.file
@@ -296,7 +394,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-type', '--constellation_type', help='WALKER_DELTA, WALKER_STAR, FILL')
+    parser.add_argument('-type', '--constellation_type', help='WALKER_DELTA, WALKER_STAR, EQUATORIAL')
     parser.add_argument('-sats', '--num_sats_per_plane', help='The number of satellites per orbital plane')
     parser.add_argument('-planes', '--num_planes', help='The number of orbital plans to generate')
 
@@ -309,6 +407,11 @@ if __name__ == "__main__":
 
     parser.add_argument('-f', '--file', help='File input name to generate orbit scenario from')
 
+    parser.add_argument('-if', '--ifile', help='File input name to generate incremental orbit scenario from')
+
     args = parser.parse_args()
 
-    main(args)
+    if args.ifile:
+        incremental_scenarios(args.ifile)
+    else:
+        main(args)
